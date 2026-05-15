@@ -2,8 +2,6 @@ import {
   WalkerApiError,
   WalkerClient,
   createWalkerConnectUrl,
-  type PartnerApp,
-  type PartnerConnection,
   type WalletBalance,
   type WalletTransaction,
 } from "@walker/walker-sdk-js";
@@ -15,7 +13,6 @@ interface DemoState {
   baseUrl: string;
   partnerName: string;
   clientId: string;
-  clientSecret: string;
   externalUserId: string;
   redirectUri: string;
   connectionToken: string;
@@ -27,7 +24,6 @@ const defaultState: DemoState = {
   baseUrl: "https://walker-xl5k.onrender.com",
   partnerName: "Walker Partner Demo",
   clientId: "",
-  clientSecret: "",
   externalUserId: "demo-web-user",
   redirectUri: `${window.location.origin}/callback`,
   connectionToken: "",
@@ -36,8 +32,6 @@ const defaultState: DemoState = {
 };
 
 let state: DemoState = loadState();
-let partnerApp: PartnerApp | null = null;
-let connection: PartnerConnection | null = null;
 let balance: WalletBalance | null = null;
 let transactions: WalletTransaction[] = [];
 let statusMessage = "Ready.";
@@ -80,22 +74,6 @@ function setError(error: unknown): void {
   render();
 }
 
-async function enrollPartner(): Promise<void> {
-  try {
-    setStatus("Enrolling partner app...");
-    partnerApp = await walker().enrollPartnerApp({
-      name: state.partnerName,
-      allowedRedirectUrls: [state.redirectUri],
-    });
-    state.clientId = partnerApp.clientId;
-    state.clientSecret = partnerApp.clientSecret;
-    saveState();
-    setStatus("Partner app enrolled. Save the client secret now; the API only returns it once.");
-  } catch (error) {
-    setError(error);
-  }
-}
-
 function openHostedConnect(): void {
   try {
     const url = createWalkerConnectUrl({
@@ -130,7 +108,7 @@ function openWalkerApp(): void {
 async function useDevConnection(): Promise<void> {
   try {
     setStatus("Creating development connection...");
-    connection = await walker().connectPartnerUser({
+    const connection = await walker().connectPartnerUser({
       clientId: state.clientId,
       externalUserId: state.externalUserId,
       scopes: ["wallet:read", "wallet:spend"],
@@ -203,8 +181,6 @@ function updateState(key: keyof DemoState, value: string): void {
 function resetDemo(): void {
   localStorage.removeItem(STORAGE_KEY);
   state = defaultState;
-  partnerApp = null;
-  connection = null;
   balance = null;
   transactions = [];
   statusMessage = "Reset complete.";
@@ -229,8 +205,8 @@ function render(): void {
     <section class="shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">Walker ecosystem test</p>
-          <h1>Partner Demo</h1>
+          <p class="eyebrow">Walker partner wallet test</p>
+          <h1>Connect & Spend Demo</h1>
         </div>
         <button data-action="reset" class="ghost">Reset</button>
       </header>
@@ -243,18 +219,13 @@ function render(): void {
         <article class="panel">
           <div class="panel-title">
             <span>1</span>
-            <h2>Enroll partner app</h2>
+            <h2>Configure partner app</h2>
           </div>
           ${input("Walker API", "baseUrl", "url")}
           ${input("Partner name", "partnerName")}
+          ${input("Partner client ID", "clientId")}
           ${input("Redirect URI", "redirectUri", "url")}
-          <button data-action="enroll">Enroll partner app</button>
-          <dl>
-            <dt>Partner client ID</dt>
-            <dd>${escapeHtml(state.clientId || "Not enrolled yet")}</dd>
-            <dt>Client secret</dt>
-            <dd>${escapeHtml(state.clientSecret || "Returned once after enrollment")}</dd>
-          </dl>
+          <p class="hint">Create partner apps in Walker admin, then paste the generated <strong>wpk_...</strong> client ID here. The redirect URI must exactly match the URL registered for that partner.</p>
         </article>
 
         <article class="panel">
@@ -267,7 +238,7 @@ function render(): void {
           <button data-action="open-walker" ${state.clientId ? "" : "disabled"} class="secondary">Open Walker app shortcut</button>
           <button data-action="dev-connect" ${state.clientId ? "" : "disabled"} class="secondary">Dev connection</button>
           ${input("Connection token", "connectionToken")}
-          <p class="hint">Use the generated <strong>wpk_...</strong> partner client ID from enrollment. Hosted consent works cross-platform; the app shortcut only works on devices with Walker installed.</p>
+          <p class="hint">Hosted consent works cross-platform; the app shortcut only works on devices with Walker installed.</p>
         </article>
 
         <article class="panel balance-panel">
@@ -324,7 +295,6 @@ function bindEvents(root: HTMLElement): void {
       updateState(element.dataset.key as keyof DemoState, element.value);
     });
   });
-  root.querySelector<HTMLElement>('[data-action="enroll"]')?.addEventListener("click", () => void enrollPartner());
   root.querySelector<HTMLElement>('[data-action="hosted-connect"]')?.addEventListener("click", openHostedConnect);
   root.querySelector<HTMLElement>('[data-action="open-walker"]')?.addEventListener("click", openWalkerApp);
   root.querySelector<HTMLElement>('[data-action="dev-connect"]')?.addEventListener("click", () => void useDevConnection());

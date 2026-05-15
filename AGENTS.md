@@ -1,6 +1,6 @@
 # Walker Partner Demo Project Context
 
-Walker-partner-demo is a small web app for testing the four-repo Walker ecosystem end to end.
+Walker-partner-demo is a small web app for testing partner wallet connection and spending across the four-repo Walker ecosystem.
 
 ## Related Repositories
 
@@ -12,13 +12,12 @@ Walker-partner-demo is a small web app for testing the four-repo Walker ecosyste
 
 This app simulates a third-party partner app. It should help test:
 
-1. partner enrollment
-2. hosted Walker consent URL generation
-3. partner redirect callback handling
-4. connection token storage
-5. wallet balance reads
-6. transaction listing
-7. spending credits with idempotency
+1. hosted Walker consent URL generation
+2. partner redirect callback handling
+3. connection token storage
+4. wallet balance reads
+5. transaction listing
+6. spending credits with idempotency
 
 ## Run
 
@@ -44,7 +43,7 @@ http://YOUR_MAC_WIFI_IP:5173
 The demo depends on the SDK from GitHub:
 
 ```json
-"@walker/walker-sdk-js": "git+https://github.com/Canpake7/Walker-sdk-js.git#e498d6e306eaa65d68e6104f51e582edcc8c9064"
+"@walker/walker-sdk-js": "git+https://github.com/Canpake7/Walker-sdk-js.git#2d92131bfca703df8ff80c1b803eccbcf7e043b3"
 ```
 
 After SDK changes, push the SDK repository to GitHub and update this commit pin so installs stay deterministic.
@@ -57,7 +56,7 @@ The primary cross-platform path is hosted Walker consent:
 https://walker-xl5k.onrender.com/connect?client_id=wpk_...&external_user_id=...&redirect_uri=...
 ```
 
-The user signs in with Google on Walker's hosted page, authorizes the connection, and Walker redirects back to this app with:
+Partner apps are created in Walker admin. The user signs in with Google on Walker's hosted page, authorizes the connection, and Walker redirects back to this app with:
 
 ```text
 walker_connection_token
