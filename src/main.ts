@@ -10,7 +10,7 @@ import "./styles.css";
 const STORAGE_KEY = "walker.partner.demo.state";
 const WALKER_API_BASE_URL = "https://walker-xl5k.onrender.com";
 const PARTNER_NAME = "Walker Partner Demo";
-const DEMO_PATH = "/demo/";
+const DEMO_PATH = "/";
 const REDIRECT_URI = `${window.location.origin}${DEMO_PATH}`;
 const WALKER_CLIENT_ID = readEnv("VITE_WALKER_CLIENT_ID");
 

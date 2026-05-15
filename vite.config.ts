@@ -10,8 +10,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        landing: "index.html",
-        demo: "demo/index.html",
+        demo: "index.html",
+        landing: "landing/index.html",
       },
     },
   },

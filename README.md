@@ -22,14 +22,14 @@ VITE_WALKER_CLIENT_ID=wpk_...
 Open:
 
 ```text
-http://localhost:5173/demo/
+http://localhost:5173
 ```
 
-The deployed root (`/`) renders the Walker landing page. The partner connect-and-spend tool is served from `/demo/`.
+The deployed root (`/`) renders the partner connect-and-spend tool. The Walker landing page is served from `/landing/`.
 
 ## Flow
 
-1. Register `https://walker-partner-demo.onrender.com/demo/` for the partner app in Walker admin.
+1. Register `https://walker-partner-demo.onrender.com/` for the partner app in Walker admin.
 2. Set `VITE_WALKER_CLIENT_ID` to the Walker-provided client ID.
 3. Open hosted Walker consent at `/connect`.
 4. Sign in with Google and approve the connection.
