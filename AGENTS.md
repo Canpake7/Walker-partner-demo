@@ -33,10 +33,10 @@ Local URL:
 http://localhost:5173
 ```
 
-iPhone-on-Wi-Fi URL from the current Mac network:
+iPhone-on-Wi-Fi URL from the current Mac network, if testing a local dev server:
 
 ```text
-http://192.168.1.208:5173
+http://YOUR_MAC_WIFI_IP:5173
 ```
 
 ## SDK Dependency
@@ -78,11 +78,13 @@ Do not confuse the partner client ID with Google OAuth client IDs, Apple Team ID
 
 ## Backend Requirements
 
-For the hosted Render backend, CORS must allow this app's origin. For local browser testing:
+For the hosted Render backend, CORS must allow this app's deployed origin:
 
 ```text
-CORS_ALLOWED_ORIGINS=http://localhost:5173,http://192.168.1.208:5173
+CORS_ALLOWED_ORIGINS=https://YOUR_PARTNER_DEMO_RENDER_URL
 ```
+
+For local browser testing, add local origins such as `http://localhost:5173` or `http://YOUR_MAC_WIFI_IP:5173`.
 
 For hosted `/connect` Google Sign-In, Walker needs:
 
