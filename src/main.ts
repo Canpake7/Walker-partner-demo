@@ -10,7 +10,8 @@ import "./styles.css";
 const STORAGE_KEY = "walker.partner.demo.state";
 const WALKER_API_BASE_URL = "https://walker-xl5k.onrender.com";
 const PARTNER_NAME = "Walker Partner Demo";
-const REDIRECT_URI = `${window.location.origin}/callback`;
+const DEMO_PATH = "/demo/";
+const REDIRECT_URI = `${window.location.origin}${DEMO_PATH}`;
 const WALKER_CLIENT_ID = readEnv("VITE_WALKER_CLIENT_ID");
 
 interface DemoState {
@@ -130,7 +131,7 @@ function captureCallback(): void {
   if (!token) return;
   state.connectionToken = token;
   saveState();
-  window.history.replaceState({}, "", "/");
+  window.history.replaceState({}, "", DEMO_PATH);
   setStatus("Captured connection token from Walker app callback.");
   void refreshWallet();
 }

@@ -35,13 +35,15 @@ VITE_WALKER_CLIENT_ID=wpk_...
 Local URL:
 
 ```text
-http://localhost:5173
+http://localhost:5173/demo/
 ```
+
+The deployed root (`/`) renders the Walker landing page. The connect-and-spend demo lives at `/demo/`.
 
 iPhone-on-Wi-Fi URL from the current Mac network, if testing a local dev server:
 
 ```text
-http://YOUR_MAC_WIFI_IP:5173
+http://YOUR_MAC_WIFI_IP:5173/demo/
 ```
 
 ## SDK Dependency
@@ -65,7 +67,7 @@ https://walker-xl5k.onrender.com/connect?client_id=wpk_...&external_user_id=...&
 Partner apps are created in Walker admin. For the hosted demo, register this exact callback URL:
 
 ```text
-https://walker-partner-demo.onrender.com/callback
+https://walker-partner-demo.onrender.com/demo/
 ```
 
 The user signs in with Google on Walker's hosted page, authorizes the connection, and Walker redirects back to this app with:

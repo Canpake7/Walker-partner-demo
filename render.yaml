@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: walker-partner-demo
+    env: node
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: VITE_WALKER_CLIENT_ID
+        sync: false
