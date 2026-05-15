@@ -56,7 +56,13 @@ The primary cross-platform path is hosted Walker consent:
 https://walker-xl5k.onrender.com/connect?client_id=wpk_...&external_user_id=...&redirect_uri=...
 ```
 
-Partner apps are created in Walker admin. The user signs in with Google on Walker's hosted page, authorizes the connection, and Walker redirects back to this app with:
+Partner apps are created in Walker admin. For the hosted demo, register this exact callback URL:
+
+```text
+https://walker-partner-demo.onrender.com/callback
+```
+
+The user signs in with Google on Walker's hosted page, authorizes the connection, and Walker redirects back to this app with:
 
 ```text
 walker_connection_token

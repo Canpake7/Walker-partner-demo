@@ -8,24 +8,21 @@ import {
 import "./styles.css";
 
 const STORAGE_KEY = "walker.partner.demo.state";
+const WALKER_API_BASE_URL = "https://walker-xl5k.onrender.com";
+const PARTNER_NAME = "Walker Partner Demo";
+const REDIRECT_URI = `${window.location.origin}/callback`;
 
 interface DemoState {
-  baseUrl: string;
-  partnerName: string;
   clientId: string;
   externalUserId: string;
-  redirectUri: string;
   connectionToken: string;
   spendAmount: string;
   spendReason: string;
 }
 
 const defaultState: DemoState = {
-  baseUrl: "https://walker-xl5k.onrender.com",
-  partnerName: "Walker Partner Demo",
   clientId: "",
   externalUserId: "demo-web-user",
-  redirectUri: `${window.location.origin}/callback`,
   connectionToken: "",
   spendAmount: "100",
   spendReason: "demo_reward",
@@ -52,7 +49,7 @@ function saveState(): void {
 
 function walker(): WalkerClient {
   return new WalkerClient({
-    baseUrl: state.baseUrl,
+    baseUrl: WALKER_API_BASE_URL,
     connectionToken: state.connectionToken || undefined,
   });
 }
@@ -77,11 +74,11 @@ function setError(error: unknown): void {
 function openHostedConnect(): void {
   try {
     const url = createWalkerConnectUrl({
-      baseUrl: state.baseUrl,
+      baseUrl: WALKER_API_BASE_URL,
       clientId: state.clientId,
       externalUserId: state.externalUserId,
-      partnerName: state.partnerName,
-      redirectUri: state.redirectUri,
+      partnerName: PARTNER_NAME,
+      redirectUri: REDIRECT_URI,
       scopes: ["wallet:read", "wallet:spend"],
     });
     window.location.href = url;
@@ -95,8 +92,8 @@ function openWalkerApp(): void {
     const url = createWalkerConnectUrl({
       clientId: state.clientId,
       externalUserId: state.externalUserId,
-      partnerName: state.partnerName,
-      redirectUri: state.redirectUri,
+      partnerName: PARTNER_NAME,
+      redirectUri: REDIRECT_URI,
       scopes: ["wallet:read", "wallet:spend"],
     });
     window.location.href = url;
@@ -221,11 +218,14 @@ function render(): void {
             <span>1</span>
             <h2>Connection settings</h2>
           </div>
-          ${input("Walker API", "baseUrl", "url")}
-          ${input("Partner name", "partnerName")}
           ${input("Client ID", "clientId")}
-          ${input("Redirect URI", "redirectUri", "url")}
-          <p class="hint">Use the client ID provided by Walker. The redirect URI must exactly match the registered callback URL for this demo.</p>
+          <dl>
+            <dt>Walker API</dt>
+            <dd>${escapeHtml(WALKER_API_BASE_URL)}</dd>
+            <dt>Redirect URI</dt>
+            <dd>${escapeHtml(REDIRECT_URI)}</dd>
+          </dl>
+          <p class="hint">Use the client ID provided by Walker for this registered callback URL.</p>
         </article>
 
         <article class="panel">

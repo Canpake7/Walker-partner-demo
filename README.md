@@ -21,11 +21,12 @@ http://localhost:5173
 
 ## Flow
 
-1. Paste the Walker-provided client ID into this demo.
-2. Open hosted Walker consent at `/connect`.
-3. Sign in with Google and approve the connection.
-4. Capture the returned `connectionToken` on this web app callback.
-5. Use the JS SDK to read balance, list transactions, and spend credits.
+1. Register `https://walker-partner-demo.onrender.com/callback` for the partner app in Walker admin.
+2. Paste the Walker-provided client ID into this demo.
+3. Open hosted Walker consent at `/connect`.
+4. Sign in with Google and approve the connection.
+5. Capture the returned `connectionToken` on this web app callback.
+6. Use the JS SDK to read balance, list transactions, and spend credits.
 
 ## Notes
 
