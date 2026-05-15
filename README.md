@@ -2,7 +2,7 @@
 
 Small web app for testing partner wallet connection and spending in the four-repo Walker integration:
 
-- `Walker`: API, partner enrollment, wallet read/spend endpoints
+- `Walker`: API, hosted consent, wallet read/spend endpoints
 - `Walker-ios`: user authorization for partner connections through `walker://connect`
 - `Walker-sdk-js`: JavaScript SDK consumed by this demo app
 
@@ -21,8 +21,8 @@ http://localhost:5173
 
 ## Flow
 
-1. Create a partner app in Walker admin and copy its `clientId`, which starts with `wpk_`.
-2. Paste the client ID into this demo and open hosted Walker consent at `/connect`.
+1. Paste the Walker-provided client ID into this demo.
+2. Open hosted Walker consent at `/connect`.
 3. Sign in with Google and approve the connection.
 4. Capture the returned `connectionToken` on this web app callback.
 5. Use the JS SDK to read balance, list transactions, and spend credits.
@@ -33,5 +33,5 @@ http://localhost:5173
 - The demo installs the SDK from public GitHub via `git+https://github.com/Canpake7/Walker-sdk-js.git#2d92131bfca703df8ff80c1b803eccbcf7e043b3`.
 - For local backend testing, set the API field to `http://localhost:8000`.
 - The development connection button uses `DEV_AUTH_ENABLED=true` fallback headers.
-- The partner client ID is generated in Walker admin. It is not the Google OAuth client ID, Apple Team ID, or iOS bundle ID.
+- The client ID is a Walker partner client ID. It is not the Google OAuth client ID, Apple Team ID, or iOS bundle ID.
 - The Walker app shortcut uses `walker://connect` and only works on devices where the Walker app is installed.

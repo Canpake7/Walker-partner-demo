@@ -219,13 +219,13 @@ function render(): void {
         <article class="panel">
           <div class="panel-title">
             <span>1</span>
-            <h2>Configure partner app</h2>
+            <h2>Connection settings</h2>
           </div>
           ${input("Walker API", "baseUrl", "url")}
           ${input("Partner name", "partnerName")}
-          ${input("Partner client ID", "clientId")}
+          ${input("Client ID", "clientId")}
           ${input("Redirect URI", "redirectUri", "url")}
-          <p class="hint">Create partner apps in Walker admin, then paste the generated <strong>wpk_...</strong> client ID here. The redirect URI must exactly match the URL registered for that partner.</p>
+          <p class="hint">Use the client ID provided by Walker. The redirect URI must exactly match the registered callback URL for this demo.</p>
         </article>
 
         <article class="panel">
