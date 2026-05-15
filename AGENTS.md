@@ -6,7 +6,7 @@ Walker-partner-demo is a small web app for testing the four-repo Walker ecosyste
 
 - `Walker`: backend API, partner enrollment, hosted `/connect` consent page, wallet endpoints
 - `Walker-ios`: official iOS app that records HealthKit activity and can approve custom-scheme partner links
-- `Walker-sdk-js`: local TypeScript SDK consumed by this demo app
+- `Walker-sdk-js`: TypeScript SDK consumed by this demo app
 
 ## Purpose
 
@@ -41,13 +41,13 @@ http://192.168.1.208:5173
 
 ## SDK Dependency
 
-The demo depends on the local SDK:
+The demo depends on the SDK from GitHub:
 
 ```json
-"@walker/walker-sdk-js": "file:../Walker-sdk-js"
+"@walker/walker-sdk-js": "git+https://github.com/Canpake7/Walker-sdk-js.git#e498d6e306eaa65d68e6104f51e582edcc8c9064"
 ```
 
-After SDK changes, rebuild the SDK and run `npm install` here so the file dependency refreshes.
+After SDK changes, push the SDK repository to GitHub and update this commit pin so installs stay deterministic.
 
 ## Main Flow
 
