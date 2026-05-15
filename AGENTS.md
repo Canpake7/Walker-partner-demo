@@ -26,6 +26,12 @@ npm install
 npm run dev
 ```
 
+Configure:
+
+```text
+VITE_WALKER_CLIENT_ID=wpk_...
+```
+
 Local URL:
 
 ```text
@@ -100,6 +106,5 @@ GOOGLE_CLIENT_IDS=<ios-client-id>.apps.googleusercontent.com,<web-client-id>.app
 
 ## Notes
 
-- The `Open Walker app shortcut` button uses `walker://connect` and only works on devices where Walker iOS is installed.
-- The `Dev connection` button uses development auth headers and only works when `DEV_AUTH_ENABLED=true`.
+- The demo only exposes hosted Walker consent with Google Sign-In for user connection.
 - `dist/`, `node_modules/`, and `*.tsbuildinfo` are generated and ignored.

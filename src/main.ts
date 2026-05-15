@@ -11,9 +11,9 @@ const STORAGE_KEY = "walker.partner.demo.state";
 const WALKER_API_BASE_URL = "https://walker-xl5k.onrender.com";
 const PARTNER_NAME = "Walker Partner Demo";
 const REDIRECT_URI = `${window.location.origin}/callback`;
+const WALKER_CLIENT_ID = readEnv("VITE_WALKER_CLIENT_ID");
 
 interface DemoState {
-  clientId: string;
   externalUserId: string;
   connectionToken: string;
   spendAmount: string;
@@ -21,7 +21,6 @@ interface DemoState {
 }
 
 const defaultState: DemoState = {
-  clientId: "",
   externalUserId: "demo-web-user",
   connectionToken: "",
   spendAmount: "100",
@@ -73,51 +72,18 @@ function setError(error: unknown): void {
 
 function openHostedConnect(): void {
   try {
+    if (!WALKER_CLIENT_ID) {
+      throw new Error("Missing VITE_WALKER_CLIENT_ID.");
+    }
     const url = createWalkerConnectUrl({
       baseUrl: WALKER_API_BASE_URL,
-      clientId: state.clientId,
+      clientId: WALKER_CLIENT_ID,
       externalUserId: state.externalUserId,
       partnerName: PARTNER_NAME,
       redirectUri: REDIRECT_URI,
       scopes: ["wallet:read", "wallet:spend"],
     });
     window.location.href = url;
-  } catch (error) {
-    setError(error);
-  }
-}
-
-function openWalkerApp(): void {
-  try {
-    const url = createWalkerConnectUrl({
-      clientId: state.clientId,
-      externalUserId: state.externalUserId,
-      partnerName: PARTNER_NAME,
-      redirectUri: REDIRECT_URI,
-      scopes: ["wallet:read", "wallet:spend"],
-    });
-    window.location.href = url;
-  } catch (error) {
-    setError(error);
-  }
-}
-
-async function useDevConnection(): Promise<void> {
-  try {
-    setStatus("Creating development connection...");
-    const connection = await walker().connectPartnerUser({
-      clientId: state.clientId,
-      externalUserId: state.externalUserId,
-      scopes: ["wallet:read", "wallet:spend"],
-      playerAuth: {
-        devPlayerEmail: "test@example.com",
-        devPlayerName: "Test Player",
-      },
-    });
-    state.connectionToken = connection.connectionToken;
-    saveState();
-    await refreshWallet();
-    setStatus("Development connection created.");
   } catch (error) {
     setError(error);
   }
@@ -218,8 +184,9 @@ function render(): void {
             <span>1</span>
             <h2>Connection settings</h2>
           </div>
-          ${input("Client ID", "clientId")}
           <dl>
+            <dt>Client ID</dt>
+            <dd>${escapeHtml(WALKER_CLIENT_ID || "Missing VITE_WALKER_CLIENT_ID")}</dd>
             <dt>Walker API</dt>
             <dd>${escapeHtml(WALKER_API_BASE_URL)}</dd>
             <dt>Redirect URI</dt>
@@ -234,11 +201,8 @@ function render(): void {
             <h2>Connect Walker user</h2>
           </div>
           ${input("Partner user ID", "externalUserId")}
-          <button data-action="hosted-connect" ${state.clientId ? "" : "disabled"}>Open hosted Walker consent</button>
-          <button data-action="open-walker" ${state.clientId ? "" : "disabled"} class="secondary">Open Walker app shortcut</button>
-          <button data-action="dev-connect" ${state.clientId ? "" : "disabled"} class="secondary">Dev connection</button>
-          ${input("Connection token", "connectionToken")}
-          <p class="hint">Hosted consent works cross-platform; the app shortcut only works on devices with Walker installed.</p>
+          <button data-action="hosted-connect" ${WALKER_CLIENT_ID ? "" : "disabled"}>Connect with Google</button>
+          <p class="hint">This opens Walker consent, signs the Walker user in with Google, and returns to this demo after approval.</p>
         </article>
 
         <article class="panel balance-panel">
@@ -296,8 +260,6 @@ function bindEvents(root: HTMLElement): void {
     });
   });
   root.querySelector<HTMLElement>('[data-action="hosted-connect"]')?.addEventListener("click", openHostedConnect);
-  root.querySelector<HTMLElement>('[data-action="open-walker"]')?.addEventListener("click", openWalkerApp);
-  root.querySelector<HTMLElement>('[data-action="dev-connect"]')?.addEventListener("click", () => void useDevConnection());
   root.querySelector<HTMLElement>('[data-action="refresh"]')?.addEventListener("click", () => void refreshWallet());
   root.querySelector<HTMLElement>('[data-action="spend"]')?.addEventListener("click", () => void spendCredits());
   root.querySelector<HTMLElement>('[data-action="reset"]')?.addEventListener("click", resetDemo);
@@ -309,6 +271,11 @@ function escapeHtml(value: string): string {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function readEnv(key: string): string {
+  const env = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env;
+  return env?.[key]?.trim() ?? "";
 }
 
 captureCallback();
